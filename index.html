@@ -15,6 +15,62 @@
 			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 			crossorigin="anonymous"
 		></script>
+		<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+		<script>
+			function edit(id) {
+				localStorage.setItem("edit", id);
+				window.location.href = "edit.html";
+			}
+			function remove(id) {
+				let tasks = JSON.parse(localStorage.getItem("tasks"));
+				tasks.splice(id, 1);
+				localStorage.setItem("tasks", JSON.stringify(tasks));
+				window.location.href = "index.html";
+			}
+			$(document).ready(function () {
+				if (localStorage.getItem("tasks") == null) {
+					$("#no-tasks").removeClass("d-none");
+					return;
+				}
+				$("table").removeClass("d-none");
+				let tasks = JSON.parse(localStorage.getItem("tasks"));
+				for (let i = 0; i < tasks.length; i++) {
+					let task = tasks[i];
+					let table = document.getElementById("tasks");
+					let success = task.status ? `<tr class="table-success">` : "<tr>";
+					let tableRow =
+						success +
+						`
+									<td>${i + 1}</td>
+									<td>${task.name}</td>
+									<td>
+										<button class="btn btn-primary" onclick="edit(${i})">
+											<img src="edit.svg" alt="" width="20px" height="20px" />
+										</button>
+									</td>
+									<td>`;
+					if (task.status) {
+						tableRow += `<button class="btn btn-warning" onclick="undone(${i})">
+											<img src="done.svg" alt="" width="20px" height="20px" /> Unfinish
+										</button>`;
+					} else {
+						tableRow += `<button class="btn btn-success" onclick="done(${i})">
+											<img src="done.svg" alt="" width="20px" height="20px" /> Finish
+										</button>`;
+					}
+					tableRow += `
+									</td>
+									<td>
+										<button class="btn btn-danger" onclick="remove(${i})">
+											<img src="delete.svg" alt="Delete" class="del_icon" width="20px" height="20px" />
+										</button>
+									</td>
+								</tr>
+											`;
+					table.innerHTML += tableRow;
+				}
+			});
+		</script>
 	</head>
 	<body class="d.flex" style="height: 100dvh">
 		<nav class="bg-body-tertiary navbar navbar-expand-lg">
