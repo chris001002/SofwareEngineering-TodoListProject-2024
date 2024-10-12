@@ -15,6 +15,28 @@
 			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 			crossorigin="anonymous"
 		></script>
+		<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+		<script>
+			//Add tasks to localStorage on submit
+			$(document).ready(function () {
+				$("#add_form").submit(function (e) {
+					e.preventDefault();
+					if ($("#task_name").val() == "") {
+						alert("Please enter task name");
+						return;
+					}
+					if (localStorage.getItem("tasks") == null) {
+						localStorage.setItem("tasks", "[]");
+					}
+					let task_name = $("#task_name").val();
+					let status = 0;
+					let tasks = JSON.parse(localStorage.getItem("tasks"));
+					tasks.push({name: task_name, status: status});
+					localStorage.setItem("tasks", JSON.stringify(tasks));
+					window.location.reload();
+				});
+			});
+		</script>
 	</head>
 	<body>
 		<nav class="bg-body-tertiary navbar navbar-expand-lg">
