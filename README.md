@@ -25,5 +25,5 @@
   - Create logic index.html (done & undone)
   - Create logic for displaying tasks in index.html
 - Shafiq:
-  - Create logic index.html (mark as done, remove, edit)
+  - Create logic index.html (remove, edit)
   - Create interface for index.html
