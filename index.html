@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Index-Todo-List</title>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+			crossorigin="anonymous"
+		/>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+			crossorigin="anonymous"
+		></script>
+		<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+		<script>
+			function edit(id) {
+				localStorage.setItem("edit", id);
+				window.location.href = "edit.html";
+			}
+			function remove(id) {
+				let tasks = JSON.parse(localStorage.getItem("tasks"));
+				tasks.splice(id, 1);
+				localStorage.setItem("tasks", JSON.stringify(tasks));
+				window.location.href = "index.html";
+			}
+			function done(id) {
+				let tasks = JSON.parse(localStorage.getItem("tasks"));
+				tasks[id].status = 1;
+				localStorage.setItem("tasks", JSON.stringify(tasks));
+				window.location.href = "index.html";
+			}
+			function undone(id) {
+				let tasks = JSON.parse(localStorage.getItem("tasks"));
+				tasks[id].status = 0;
+				localStorage.setItem("tasks", JSON.stringify(tasks));
+				window.location.href = "index.html";
+			}
+			$(document).ready(function () {
+				if (localStorage.getItem("tasks") == null) {
+					$("#no-tasks").removeClass("d-none");
+					return;
+				}
+				$("table").removeClass("d-none");
+				let tasks = JSON.parse(localStorage.getItem("tasks"));
+				for (let i = 0; i < tasks.length; i++) {
+					let task = tasks[i];
+					let table = document.getElementById("tasks");
+					let success = task.status ? `<tr class="table-success">` : "<tr>";
+					let tableRow =
+						success +
+						`
+									<td>${i + 1}</td>
+									<td>${task.name}</td>
+									<td>
+										<button class="btn btn-primary" onclick="edit(${i})">
+											<img src="edit.svg" alt="" width="20px" height="20px" />
+										</button>
+									</td>
+									<td>`;
+					if (task.status) {
+						tableRow += `<button class="btn btn-warning" onclick="undone(${i})">
+											<img src="done.svg" alt="" width="20px" height="20px" /> Unfinish
+										</button>`;
+					} else {
+						tableRow += `<button class="btn btn-success" onclick="done(${i})">
+											<img src="done.svg" alt="" width="20px" height="20px" /> Finish
+										</button>`;
+					}
+					tableRow += `
+									</td>
+									<td>
+										<button class="btn btn-danger" onclick="remove(${i})">
+											<img src="delete.svg" alt="Delete" class="del_icon" width="20px" height="20px" />
+										</button>
+									</td>
+								</tr>
+											`;
+					table.innerHTML += tableRow;
+				}
+			});
+		</script>
+	</head>
+	<body class="d.flex" style="height: 100dvh">
+		<nav class="bg-body-tertiary navbar navbar-expand-lg">
+			<div class="container-fluid">
+				<h1 class="navbar-brand">To do List</h1>
+				<button
+					class="navbar-toggler"
+					type="button"
+					data-bs-toggle="collapse"
+					data-bs-target="#navbarNavDropdown"
+					aria-controls="navbarNavDropdown"
+					aria-expanded="false"
+					aria-label="Toggle navigation"
+				>
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNavDropdown">
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<a class="active nav-link" aria-current="page" href="index.html">View Tasks</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="add.html">Add task</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="edit.html">Edit task</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<h1 class="top-50 position-absolute p-3 translate-middle d-none start-50" id="no-tasks">No tasks. Click <a href="add.html">here</a> to add tasks</h1>
+		<table class="mx-auto mt-5 table table-primary" id="tasks" style="width: clamp(400px, 50%, 90vw); overflow-y: scroll">
+			<thead class="table-dark">
+				<tr>
+					<th>No.</th>
+					<th scope="col">Task Name</th>
+					<th scope="col">Edit</th>
+					<th scope="col">Mark as done</th>
+					<th scope="col">Remove</th>
+				</tr>
+			</thead>
+
+			<tr>
+				<td>1</td>
+				<td>Task 1</td>
+				<td>
+					<button class="btn btn-primary" onclick="edit(1)">
+						<img src="edit.svg" alt="" width="20px" height="20px" />
+					</button>
+				</td>
+				<td>
+					<button class="btn btn-warning" onclick="undone(1)"><img src="done.svg" alt="" width="20px" height="20px" /> Unfinish</button>
+				</td>
+				<td>
+					<button class="btn btn-danger" onclick="remove(1)">
+						<img src="delete.svg" alt="Delete" class="del_icon" width="20px" height="20px" />
+					</button>
+				</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>Task 2</td>
+				<td>
+					<button class="btn btn-primary" onclick="edit(2)">
+						<img src="edit.svg" alt="" width="20px" height="20px" />
+					</button>
+				</td>
+				<td>
+					<button class="btn btn-success" onclick="done(2)"><img src="done.svg" alt="" width="20px" height="20px" /> Finish</button>
+				</td>
+				<td>
+					<button class="btn btn-danger" onclick="remove(2)">
+						<img src="delete.svg" alt="Delete" class="del_icon" width="20px" height="20px" />
+					</button>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
+<!--
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⡗⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠠⠶⠿⠿⠿⠿⠿⠿⠿⠿⠶⠄⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⣀⣤⣶⣶⣤⡀⠀⣠⣤⣴⣶⣶⣶⣶⣶⣶⣦⣤⣄⠀⢀⣤⣶⣶⣤⣀⠀
+⣸⣿⣿⣿⣿⣿1⣾⣿shafiq⣿⣿⣶diego⣷chris⣿⣿⣇
+⢸⣿⣿⣿⣿⣿⣿⣿⠟⠛⠛⠛⢿⣿⣿⡿⠛⠛⠛⠻⣿⣿⣿⣿⣿⣿⣿⡇
+⠀⠙⠿⢿⠿⣿⣿⣿⣶⣿⣿⣷⣾⣿⣿⣷⣾⣿⣿⣶⣿⣿⣿⠿⡿⠿⠋⠀
+⠀⠀⠀⠀⢀⣿⣿⣿⡟⠋⣭⠙⢿⣿⣿⡿⠋⣭⠙⢻⣿⣿⣿⡀⠀⠀⠀⠀
+⠀⠀⠀⢠⣾⣿⣿⣿⣿⣄⣀⣾⡟⠋⠙⢻⣷⣀⣠⣿⣿⣿⣿⣷⡄⠀⠀⠀
+⠀⠀⠀⣿⣿⣿⣿⡿⠛⠉⠉⠙⠛⢿⡿⠛⠛⠉⠉⠛⠻⣿⣿⣿⣿⠀⠀⠀
+⠀⠀⠀⠘⣿⣿⣿⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⠀⠀⢹⣿⣿⣿⠃0 ⠀⠀⠀
+⠀⠀⠀⠀⠈⢻⣿⣷⣤⣤⣤⣤⣤⣾⣷⣤⣄⣀⣀⣤⣴⣿⡟⠁⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣉⣿⡇⣸⣇⢸⣿⣉⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠻⣿⣿⣿jonathan⣿⣿⣿⣿⣿⠟⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠈⠛⠿⠿⢿⣿⣿⣿⣿⡿⠿⠿⠛⠁⠀⠀⠀⠀⠀⠀
+
+Ignore the watermark -Shafiq⠀
+-->
+<!-- HAR HAR HAR HAR HAR HAR HAR HAR HAR HAR HAR HAR HAR HAR HAR HAR HAR HAR-->
