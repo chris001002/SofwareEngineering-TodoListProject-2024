@@ -29,13 +29,13 @@
 			}
 			function done(id) {
 				let tasks = JSON.parse(localStorage.getItem("tasks"));
-				tasks[id].status = true;
+				tasks[id].status = 1;
 				localStorage.setItem("tasks", JSON.stringify(tasks));
 				window.location.href = "index.html";
 			}
 			function undone(id) {
 				let tasks = JSON.parse(localStorage.getItem("tasks"));
-				tasks[id].status = false;
+				tasks[id].status = 0;
 				localStorage.setItem("tasks", JSON.stringify(tasks));
 				window.location.href = "index.html";
 			}
