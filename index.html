@@ -17,6 +17,28 @@
 		></script>
 		<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 		<script>
+			function edit(id) {
+				localStorage.setItem("edit", id);
+				window.location.href = "edit.html";
+			}
+			function remove(id) {
+				let tasks = JSON.parse(localStorage.getItem("tasks"));
+				tasks.splice(id, 1);
+				localStorage.setItem("tasks", JSON.stringify(tasks));
+				window.location.href = "index.html";
+			}
+			function done(id) {
+				let tasks = JSON.parse(localStorage.getItem("tasks"));
+				tasks[id].status = true;
+				localStorage.setItem("tasks", JSON.stringify(tasks));
+				window.location.href = "index.html";
+			}
+			function undone(id) {
+				let tasks = JSON.parse(localStorage.getItem("tasks"));
+				tasks[id].status = false;
+				localStorage.setItem("tasks", JSON.stringify(tasks));
+				window.location.href = "index.html";
+			}
 			$(document).ready(function () {
 				if (localStorage.getItem("tasks") == null) {
 					$("#no-tasks").removeClass("d-none");
