@@ -16,6 +16,48 @@
 			crossorigin="anonymous"
 		></script>
 		<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+        <script>
+            $(document).ready(function () {
+                let tasks = JSON.parse(localStorage.getItem("tasks"));
+                for (let i = 0; i < tasks.length; i++) {
+                    let option = $(`<option value="${i}">` + (i + 1) + "</option>");
+                    $("#task_number").append(option);
+                }
+    
+                $("#task_number").on("change", function () {
+                    let id = $("#task_number").val();
+                    $("#task_name").val(tasks[id].name);
+                    $("#task_status").val(tasks[id].status);
+                });
+                if (localStorage.getItem("edit") != null) {
+                    let id = localStorage.getItem("edit");
+                    $("#task_number").val(id);
+                    $("#task_name").val(tasks[id].name);
+                    $("#task_status").val(tasks[id].status);
+                    localStorage.removeItem("edit");
+                }
+                $("#edit_form").submit(function (e) {
+                    e.preventDefault();
+                    if ($("#task_name").val() == "") {
+                        alert("Please enter task name");
+                        return;
+                    }
+                    if ($("#task_number").val() == "") {
+                        alert("Please select task number");
+                        return;
+                    }
+                    if ($("#task_status").val() == "") {
+                        alert("Please select task status");
+                        return;
+                    }
+                    let id = $("#task_number").val();
+                    tasks[id].name = $("#task_name").val();
+                    tasks[id].status = $("#task_status").val();
+                    localStorage.setItem("tasks", JSON.stringify(tasks));
+                    window.location.href = "index.html";
+                });
+            });
+        </script>
 	</head>
 	<body class="">
 		<nav class="bg-body-tertiary navbar navbar-expand-lg">
