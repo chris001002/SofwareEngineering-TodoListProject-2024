@@ -24,6 +24,11 @@
 			function remove(id) {
 				let tasks = JSON.parse(localStorage.getItem("tasks"));
 				tasks.splice(id, 1);
+				if (tasks.length == 0) {
+					localStorage.removeItem("tasks");
+					window.location.href = "index.html";
+					return;
+				}
 				localStorage.setItem("tasks", JSON.stringify(tasks));
 				window.location.href = "index.html";
 			}
@@ -115,7 +120,7 @@
 			</div>
 		</nav>
 		<h1 class="top-50 position-absolute p-3 translate-middle d-none start-50" id="no-tasks">No tasks. Click <a href="add.html">here</a> to add tasks</h1>
-		<table class="mx-auto mt-5 table table-primary" id="tasks" style="width: clamp(400px, 50%, 90vw); overflow-y: scroll">
+		<table class="mx-auto mt-5 d-none table table-primary" id="tasks" style="width: clamp(400px, 50%, 90vw); overflow-y: scroll">
 			<thead class="table-dark">
 				<tr>
 					<th>No.</th>
